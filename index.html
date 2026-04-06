@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<title>Riley's Brain</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:     #1c1c2a;
+  --ink2:    #3a3a52;
+  --mist:    #8a8aaa;
+  --fog:     #c8c8e0;
+  --paper:   #f5f3ee;
+  --cream:   #faf8f4;
+  --white:   #ffffff;
+  --moss:    #2d4a2d;
+  --sage:    #6b8f6b;
+  --leaf:    #a8c8a8;
+  --amber:   #c8883a;
+  --amber-lt:#fdf0e0;
+  --blush:   #c87a7a;
+  --blush-lt:#fdf0f0;
+  --lavender:#7a7ac8;
+  --lav-lt:  #f0f0fd;
+  --gold:    #b8963a;
+  --border:  rgba(28,28,42,0.1);
+  --radius:  10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--cream);
+}
+
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.brand em {
+  font-style: italic;
+  color: var(--moss);
+}
+
+.date-block {
+  text-align: right;
+}
+.date-day {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--ink2);
+}
+.date-full {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mist);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--ink);
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+
+.nav-link {
+  color: var(--fog);
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 20px;
+  white-space: nowrap;
+  transition: all 0.15s;
+  border-bottom: 2px solid transparent;
+}
+.nav-link:hover { color: white; }
+.nav-link.active { color: white; border-bottom-color: var(--sage); }
+
+/* ── LAYOUT ── */
+.main { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+
+.top-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+@media (max-width: 800px) { .top-grid { grid-template-columns: 1fr; } }
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-label button {
+  background: none;
+  border: none;
+  color: var(--mist);
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0;
+  transition: color 0.15s;
+}
+.section-label button:hover { color: var(--ink); }
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px 20px;
+}
+
+/* ── DAILY 3 ── */
+.daily3-list { list-style: none; }
+
+.daily3-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.daily3-item:last-child { border-bottom: none; }
+
+.daily3-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--fog);
+  line-height: 1;
+  width: 24px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.daily3-check {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--fog);
+  border-radius: 50%;
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: white;
+  transition: all 0.15s;
+  background: white;
+}
+.daily3-check.done { background: var(--moss); border-color: var(--moss); }
+
+.daily3-text {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  font-family: 'Instrument Sans', sans-serif;
+  cursor: text;
+}
+.daily3-text.done { color: var(--mist); text-decoration: line-through; }
+.daily3-text::placeholder { color: var(--fog); }
+
+.daily3-progress {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-track {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--moss);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  color: var(--mist);
+  white-space: nowrap;
+}
+
+/* ── QUOTE / INTENTION ── */
+.intention-card {
+  background: var(--ink);
+  color: var(--fog);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.intention-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mist);
+  margin-bottom: 10px;
+}
+.intention-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 300;
+  font-style: italic;
+  color: white;
+  line-height: 1.55;
+  flex: 1;
+  outline: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  resize: none;
+  cursor: text;
+  min-height: 60px;
+}
+.intention-text::placeholder { color: var(--ink2); }
+.intention-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  color: var(--mist);
+  margin-top: 10px;
+}
+
+/* ── MASTER TODO ── */
+.todo-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.todo-filter {
+  border: 1px solid var(--border);
+  background: var(--paper);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 10.5px;
+  font-family: 'DM Mono', monospace;
+  color: var(--mist);
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.04em;
+}
+.todo-filter.active, .todo-filter:hover {
+  background: var(--ink);
+  color: white;
+  border-color: var(--ink);
+}
+.todo-add-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.todo-input {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 11px;
+  font-size: 13px;
+  font-family: 'Instrument Sans', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.todo-input:focus { border-color: var(--sage); }
+.cat-select {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--ink2);
+  background: var(--paper);
+  outline: none;
+  cursor: pointer;
+}
+.add-btn {
+  border: none;
+  background: var(--moss);
+  color: white;
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.add-btn:hover { background: var(--sage); }
+
+.todo-list { list-style: none; }
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  group: true;
+}
+.todo-item:last-child { border-bottom: none; }
+
+.todo-check {
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--fog);
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: white;
+  transition: all 0.15s;
+}
+.todo-check.done { background: var(--moss); border-color: var(--moss); }
+
+.todo-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.12s;
+}
+.todo-text.done { color: var(--mist); text-decoration: line-through; }
+
+.todo-cat-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.todo-delete {
+  background: none;
+  border: none;
+  color: var(--fog);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.todo-item:hover .todo-delete { opacity: 1; }
+.todo-delete:hover { color: var(--blush); }
+
+.todo-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.stat-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mist);
+}
+.stat-pill strong { color: var(--ink); }
+
+/* ── PROJECT TILES ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.project-tile {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.12s;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+}
+.project-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--tile-color, var(--fog));
+}
+.project-tile:hover { box-shadow: 0 4px 16px rgba(28,28,42,0.1); transform: translateY(-2px); }
+
+.tile-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.tile-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  color: var(--mist);
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+.tile-next {
+  font-size: 11.5px;
+  color: var(--ink2);
+  line-height: 1.4;
+  border-left: 2px solid var(--fog);
+  padding-left: 8px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.tile-bar-wrap { background: var(--border); border-radius: 2px; height: 3px; }
+.tile-bar-fill { height: 3px; border-radius: 2px; background: var(--tile-color, var(--sage)); transition: width 0.3s; }
+.tile-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--mist);
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* ── EDIT PROJECT MODAL ── */
+.modal-backdrop {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(28,28,42,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: var(--white);
+  border-radius: 12px;
+  width: min(520px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(28,28,42,0.2);
+}
+.modal-head {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+.modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--mist); }
+.modal-body { padding: 16px 20px; }
+.modal-foot { padding: 12px 20px; border-top: 1px solid var(--border); display: flex; gap: 8px; justify-content: flex-end; }
+
+.field-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mist);
+  display: block;
+  margin-bottom: 5px;
+  margin-top: 14px;
+}
+.field-label:first-child { margin-top: 0; }
+.field-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-family: 'Instrument Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.field-input:focus { border-color: var(--sage); }
+.field-textarea { min-height: 70px; resize: vertical; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn-primary { background: var(--moss); color: white; border: none; border-radius: 6px; padding: 7px 18px; font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; transition: background 0.15s; }
+.btn-primary:hover { background: var(--sage); }
+.btn-secondary { background: var(--paper); color: var(--ink2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 14px; font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; }
+.btn-danger { background: none; color: var(--blush); border: 1px solid #ecc; border-radius: 6px; padding: 7px 14px; font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; margin-right: auto; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink); color: white;
+  padding: 8px 18px; border-radius: 8px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  z-index: 999; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── PALETTE CHIPS ── */
+.color-row { display: flex; gap: 6px; margin-top: 4px; }
+.color-chip {
+  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
+  border: 2px solid transparent; transition: border-color 0.13s;
+}
+.color-chip.selected { border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Riley's <em>Brain</em></div>
+  <div class="date-block">
+    <div class="date-day" id="day-name"></div>
+    <div class="date-full" id="date-full"></div>
+  </div>
+</header>
+
+<nav>
+  <a href="index.html" class="nav-link active">Home</a>
+  <a href="career.html" class="nav-link">Career Tracker</a>
+  <a href="projects.html" class="nav-link">Projects</a>
+  <a href="substack.html" class="nav-link">Substack</a>
+  <a href="budget.html" class="nav-link">Budget</a>
+  <a href="portfolio.html" class="nav-link">Portfolio</a>
+</nav>
+
+<div class="main">
+
+  <!-- TOP ROW: Daily 3 + Intention -->
+  <div class="top-grid">
+
+    <!-- Daily 3 -->
+    <div>
+      <div class="section-label">
+        <span>Today's 3 things</span>
+        <button onclick="resetDaily()">Reset for today</button>
+      </div>
+      <div class="card">
+        <ul class="daily3-list" id="daily3-list">
+          <li class="daily3-item">
+            <span class="daily3-num">1</span>
+            <div class="daily3-check" onclick="toggleDaily(this)"></div>
+            <input class="daily3-text" placeholder="What's your first priority today?" oninput="saveDaily()" onblur="saveDaily()">
+          </li>
+          <li class="daily3-item">
+            <span class="daily3-num">2</span>
+            <div class="daily3-check" onclick="toggleDaily(this)"></div>
+            <input class="daily3-text" placeholder="Second most important thing..." oninput="saveDaily()" onblur="saveDaily()">
+          </li>
+          <li class="daily3-item">
+            <span class="daily3-num">3</span>
+            <div class="daily3-check" onclick="toggleDaily(this)"></div>
+            <input class="daily3-text" placeholder="Third thing..." oninput="saveDaily()" onblur="saveDaily()">
+          </li>
+        </ul>
+        <div class="daily3-progress">
+          <div class="progress-track"><div class="progress-fill" id="daily-bar" style="width:0%"></div></div>
+          <span class="progress-label" id="daily-label">0 of 3 done</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Intention -->
+    <div>
+      <div class="section-label"><span>Today's intention</span></div>
+      <div class="intention-card">
+        <div>
+          <div class="intention-label">Set the tone for today</div>
+          <textarea class="intention-text" id="intention" placeholder="What energy do you want to bring today? What matters most?" oninput="saveIntention()" rows="4"></textarea>
+        </div>
+        <div class="intention-date" id="intention-date"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MASTER TODO -->
+  <div style="margin-bottom: 24px">
+    <div class="section-label">
+      <span>Master to-do</span>
+      <span id="todo-stats-label"></span>
+    </div>
+    <div class="card">
+      <div class="todo-add-row">
+        <input class="todo-input" id="todo-input" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTodo()">
+        <select class="cat-select" id="todo-cat">
+          <option value="career">Career</option>
+          <option value="creative">Creative</option>
+          <option value="home">Home</option>
+          <option value="inbox">Inbox</option>
+          <option value="general">General</option>
+        </select>
+        <button class="add-btn" onclick="addTodo()">+ Add</button>
+      </div>
+      <div class="todo-controls">
+        <button class="todo-filter active" onclick="setTodoFilter('all',this)">All</button>
+        <button class="todo-filter" onclick="setTodoFilter('career',this)">Career</button>
+        <button class="todo-filter" onclick="setTodoFilter('creative',this)">Creative</button>
+        <button class="todo-filter" onclick="setTodoFilter('home',this)">Home</button>
+        <button class="todo-filter" onclick="setTodoFilter('inbox',this)">Inbox</button>
+        <button class="todo-filter" onclick="setTodoFilter('done',this)">Done</button>
+      </div>
+      <ul class="todo-list" id="todo-list"></ul>
+      <div class="todo-stats">
+        <div class="progress-track" style="flex:1">
+          <div class="progress-fill" id="todo-bar" style="width:0%"></div>
+        </div>
+        <span class="stat-pill" id="todo-count"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT TILES -->
+  <div>
+    <div class="section-label">
+      <span>Open projects</span>
+      <button onclick="openProjectModal()">+ Add project</button>
+    </div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </div>
+
+</div>
+
+<!-- PROJECT MODAL -->
+<div class="modal-backdrop" id="project-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Add project</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-project-id">
+      <label class="field-label">Project name *</label>
+      <input class="field-input" id="p-name" placeholder="e.g. Substack">
+      <div class="field-row">
+        <div>
+          <label class="field-label">Category</label>
+          <select class="field-input" id="p-cat">
+            <option value="career">Career</option>
+            <option value="creative">Creative</option>
+            <option value="home">Home</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label">Status</label>
+          <select class="field-input" id="p-status">
+            <option value="active">Active</option>
+            <option value="paused">Paused</option>
+            <option value="someday">Someday</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+      </div>
+      <label class="field-label">Next action (one thing to do next)</label>
+      <input class="field-input" id="p-next" placeholder="e.g. Draft first Substack post outline">
+      <label class="field-label">Notes</label>
+      <textarea class="field-input field-textarea" id="p-notes" placeholder="Anything else to remember about this project..."></textarea>
+      <div class="field-row" style="margin-top:14px">
+        <div>
+          <label class="field-label">Progress (0–100)</label>
+          <input class="field-input" id="p-progress" type="number" min="0" max="100" placeholder="0">
+        </div>
+        <div>
+          <label class="field-label">Color</label>
+          <div class="color-row" id="color-row">
+            <div class="color-chip selected" style="background:#2d4a2d" data-color="#2d4a2d" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#c8883a" data-color="#c8883a" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#7a7ac8" data-color="#7a7ac8" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#c87a7a" data-color="#c87a7a" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#7aaa88" data-color="#7aaa88" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#aa8855" data-color="#aa8855" onclick="selectColor(this)"></div>
+            <div class="color-chip" style="background:#778899" data-color="#778899" onclick="selectColor(this)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-danger" id="delete-project-btn" onclick="deleteProject()" style="display:none">Delete</button>
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveProject()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONSTANTS ─────────────────────────────────────────────
+const CAT_COLORS = {
+  career:  { bg:'#eef5ee', c:'#2d4a2d', pill:'#c8e6c8' },
+  creative:{ bg:'#fdf0e0', c:'#7a4010', pill:'#f5d8b0' },
+  home:    { bg:'#f0f0fd', c:'#2a2a8a', pill:'#c5caee' },
+  inbox:   { bg:'#fdf0f5', c:'#8a2a4a', pill:'#eec5d5' },
+  general: { bg:'#f4f4f2', c:'#3a3a52', pill:'#d3d1c7' },
+};
+
+const DEFAULT_PROJECTS = [
+  { id:1,  name:'Job search',        cat:'career',   status:'active',  next:'Email Ingui Architecture with targeted letter', notes:'', progress:15, color:'#2d4a2d' },
+  { id:2,  name:'Portfolio',         cat:'career',   status:'active',  next:'Define what to include and start structure',   notes:'', progress:5,  color:'#2d4a2d' },
+  { id:3,  name:'Curtain wall',      cat:'career',   status:'active',  next:'Weekly check-in on project status',            notes:'Current MEP project', progress:40, color:'#778899' },
+  { id:4,  name:'Leadership book club',cat:'career', status:'active',  next:'Read this week\'s chapters',                   notes:'', progress:30, color:'#7a7ac8' },
+  { id:5,  name:'Substack',          cat:'creative', status:'active',  next:'Write first post outline',                     notes:'', progress:10, color:'#c8883a' },
+  { id:6,  name:'Sewing projects',   cat:'creative', status:'active',  next:'Finish current project before starting next',  notes:'', progress:50, color:'#c87a7a' },
+  { id:7,  name:'Pottery',           cat:'creative', status:'active',  next:'Plan next session',                            notes:'', progress:20, color:'#aa8855' },
+  { id:8,  name:"Artist's Way",      cat:'creative', status:'active',  next:'Complete this week\'s morning pages',          notes:'', progress:25, color:'#c8883a' },
+  { id:9,  name:'Cooking + recipes', cat:'creative', status:'someday', next:'Find a cooking class to sign up for',          notes:'', progress:5,  color:'#aa8855' },
+  { id:10, name:'Apartment search',  cat:'home',     status:'active',  next:'Update search criteria and check new listings',notes:'', progress:20, color:'#7a7ac8' },
+  { id:11, name:'Condo maintenance', cat:'home',     status:'active',  next:'Make list of outstanding tasks',               notes:'', progress:10, color:'#7aaa88' },
+  { id:12, name:'Spring cleaning',   cat:'home',     status:'active',  next:'Start with one room this weekend',             notes:'', progress:0,  color:'#7aaa88' },
+  { id:13, name:'Budget',            cat:'home',     status:'active',  next:'Set up monthly budget tracker',                notes:'', progress:0,  color:'#c87a7a' },
+  { id:14, name:'Trips to plan',     cat:'home',     status:'someday', next:'Make wishlist of places to go in 2025',        notes:'', progress:5,  color:'#7a7ac8' },
+  { id:15, name:'Classes to take',   cat:'career',   status:'someday', next:'Research PHIUS Passive House certification',   notes:'', progress:5,  color:'#2d4a2d' },
+  { id:16, name:'Horticultural',     cat:'career',   status:'someday', next:'Find a local horticultural program or course', notes:'', progress:0,  color:'#7aaa88' },
+  { id:17, name:'To be read',        cat:'inbox',    status:'active',  next:'Choose next book from the list',               notes:'', progress:0,  color:'#c87a7a' },
+  { id:18, name:'To be researched',  cat:'inbox',    status:'active',  next:'Add topics as they come up',                   notes:'', progress:0,  color:'#778899' },
+];
+
+// ── STATE ─────────────────────────────────────────────────
+let projects = JSON.parse(localStorage.getItem('rb_projects') || 'null') || DEFAULT_PROJECTS;
+let todos    = JSON.parse(localStorage.getItem('rb_todos')    || '[]');
+let daily    = JSON.parse(localStorage.getItem('rb_daily')   || 'null');
+let intention= localStorage.getItem('rb_intention') || '';
+let selectedColor = '#2d4a2d';
+let todoFilter = 'all';
+let editingProjectId = null;
+
+// ── DATE ──────────────────────────────────────────────────
+function initDate() {
+  const now = new Date();
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('day-name').textContent = days[now.getDay()];
+  document.getElementById('date-full').textContent = `${months[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+  document.getElementById('intention-date').textContent = `${days[now.getDay()].toLowerCase()} · ${months[now.getMonth()].toLowerCase()} ${now.getDate()}`;
+}
+
+// ── DAILY 3 ──────────────────────────────────────────────
+function initDaily() {
+  const today = new Date().toDateString();
+  if (!daily || daily.date !== today) {
+    daily = { date: today, items: [{text:'',done:false},{text:'',done:false},{text:'',done:false}] };
+    localStorage.setItem('rb_daily', JSON.stringify(daily));
+  }
+  const items = document.querySelectorAll('.daily3-item');
+  items.forEach((item, i) => {
+    const input = item.querySelector('.daily3-text');
+    const check = item.querySelector('.daily3-check');
+    input.value = daily.items[i].text;
+    if (daily.items[i].done) {
+      check.classList.add('done');
+      check.textContent = '✓';
+      input.classList.add('done');
+    }
+  });
+  updateDailyProgress();
+}
+
+function toggleDaily(checkEl) {
+  const item = checkEl.closest('.daily3-item');
+  const input = item.querySelector('.daily3-text');
+  const i = [...document.querySelectorAll('.daily3-item')].indexOf(item);
+  daily.items[i].done = !daily.items[i].done;
+  checkEl.classList.toggle('done', daily.items[i].done);
+  checkEl.textContent = daily.items[i].done ? '✓' : '';
+  input.classList.toggle('done', daily.items[i].done);
+  saveDaily();
+}
+
+function saveDaily() {
+  const inputs = document.querySelectorAll('.daily3-text');
+  inputs.forEach((inp, i) => { daily.items[i].text = inp.value; });
+  localStorage.setItem('rb_daily', JSON.stringify(daily));
+  updateDailyProgress();
+}
+
+function updateDailyProgress() {
+  const done = daily.items.filter(i => i.done).length;
+  document.getElementById('daily-bar').style.width = (done/3*100)+'%';
+  document.getElementById('daily-label').textContent = `${done} of 3 done`;
+}
+
+function resetDaily() {
+  if (!confirm('Reset today\'s 3 things?')) return;
+  daily.items = [{text:'',done:false},{text:'',done:false},{text:'',done:false}];
+  localStorage.setItem('rb_daily', JSON.stringify(daily));
+  document.querySelectorAll('.daily3-text').forEach(i => { i.value=''; i.classList.remove('done'); });
+  document.querySelectorAll('.daily3-check').forEach(c => { c.classList.remove('done'); c.textContent=''; });
+  updateDailyProgress();
+}
+
+// ── INTENTION ─────────────────────────────────────────────
+function initIntention() {
+  document.getElementById('intention').value = intention;
+}
+function saveIntention() {
+  intention = document.getElementById('intention').value;
+  localStorage.setItem('rb_intention', intention);
+}
+
+// ── TODOS ─────────────────────────────────────────────────
+function addTodo() {
+  const input = document.getElementById('todo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const cat = document.getElementById('todo-cat').value;
+  todos.push({ id: Date.now(), text, cat, done: false });
+  input.value = '';
+  saveTodos();
+  renderTodos();
+  toast('Task added');
+}
+
+function toggleTodo(id) {
+  const t = todos.find(t => t.id === id);
+  if (t) t.done = !t.done;
+  saveTodos();
+  renderTodos();
+}
+
+function deleteTodo(id) {
+  todos = todos.filter(t => t.id !== id);
+  saveTodos();
+  renderTodos();
+}
+
+function saveTodos() { localStorage.setItem('rb_todos', JSON.stringify(todos)); }
+
+function setTodoFilter(f, btn) {
+  todoFilter = f;
+  document.querySelectorAll('.todo-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTodos();
+}
+
+function renderTodos() {
+  const list = document.getElementById('todo-list');
+  let filtered = todos;
+  if (todoFilter === 'done') filtered = todos.filter(t => t.done);
+  else if (todoFilter !== 'all') filtered = todos.filter(t => t.cat === todoFilter && !t.done);
+  else filtered = todos.filter(t => !t.done);
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<li style="padding:16px 0;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--mist)">${todoFilter==='done'?'Nothing completed yet — keep going!':'All clear. Add something above.'}</li>`;
+  } else {
+    list.innerHTML = filtered.map(t => {
+      const cc = CAT_COLORS[t.cat] || CAT_COLORS.general;
+      return `<li class="todo-item">
+        <div class="todo-check ${t.done?'done':''}" onclick="toggleTodo(${t.id})">${t.done?'✓':''}</div>
+        <span class="todo-text ${t.done?'done':''}" onclick="toggleTodo(${t.id})">${t.text}</span>
+        <span class="todo-cat-pill" style="background:${cc.pill};color:${cc.c}">${t.cat}</span>
+        <button class="todo-delete" onclick="deleteTodo(${t.id})">×</button>
+      </li>`;
+    }).join('');
+  }
+
+  const total = todos.length;
+  const done  = todos.filter(t => t.done).length;
+  const pct   = total > 0 ? Math.round(done/total*100) : 0;
+  document.getElementById('todo-bar').style.width = pct+'%';
+  document.getElementById('todo-count').innerHTML = `<strong>${done}/${total}</strong> tasks complete — ${pct}%`;
+  document.getElementById('todo-stats-label').textContent = `${todos.filter(t=>!t.done).length} remaining`;
+}
+
+// ── PROJECTS ──────────────────────────────────────────────
+function renderProjects() {
+  const grid = document.getElementById('projects-grid');
+  const active = projects.filter(p => p.status !== 'done');
+  grid.innerHTML = active.map(p => `
+    <div class="project-tile" style="--tile-color:${p.color}" onclick="editProjectById(${p.id})">
+      <div class="tile-name">${p.name}</div>
+      <div class="tile-status">${p.status} · ${p.cat}</div>
+      ${p.next ? `<div class="tile-next">${p.next}</div>` : ''}
+      <div class="tile-bar-wrap"><div class="tile-bar-fill" style="width:${p.progress||0}%"></div></div>
+      <div class="tile-pct">${p.progress||0}%</div>
+    </div>
+  `).join('');
+}
+
+function openProjectModal() {
+  editingProjectId = null;
+  document.getElementById('modal-title').textContent = 'Add project';
+  document.getElementById('delete-project-btn').style.display = 'none';
+  document.getElementById('edit-project-id').value = '';
+  document.getElementById('p-name').value = '';
+  document.getElementById('p-cat').value = 'general';
+  document.getElementById('p-status').value = 'active';
+  document.getElementById('p-next').value = '';
+  document.getElementById('p-notes').value = '';
+  document.getElementById('p-progress').value = '0';
+  selectColorByValue('#2d4a2d');
+  document.getElementById('project-modal').classList.add('show');
+}
+
+function editProjectById(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  editingProjectId = id;
+  document.getElementById('modal-title').textContent = 'Edit project';
+  document.getElementById('delete-project-btn').style.display = 'inline-flex';
+  document.getElementById('edit-project-id').value = id;
+  document.getElementById('p-name').value = p.name;
+  document.getElementById('p-cat').value = p.cat;
+  document.getElementById('p-status').value = p.status;
+  document.getElementById('p-next').value = p.next || '';
+  document.getElementById('p-notes').value = p.notes || '';
+  document.getElementById('p-progress').value = p.progress || 0;
+  selectColorByValue(p.color || '#2d4a2d');
+  document.getElementById('project-modal').classList.add('show');
+}
+
+function saveProject() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) { toast('Project name is required'); return; }
+  const data = {
+    name,
+    cat: document.getElementById('p-cat').value,
+    status: document.getElementById('p-status').value,
+    next: document.getElementById('p-next').value.trim(),
+    notes: document.getElementById('p-notes').value.trim(),
+    progress: parseInt(document.getElementById('p-progress').value) || 0,
+    color: selectedColor,
+  };
+  if (editingProjectId) {
+    const idx = projects.findIndex(p => p.id === editingProjectId);
+    if (idx !== -1) projects[idx] = { ...projects[idx], ...data };
+    toast('Project updated');
+  } else {
+    projects.push({ id: Date.now(), ...data });
+    toast('Project added');
+  }
+  localStorage.setItem('rb_projects', JSON.stringify(projects));
+  closeModal();
+  renderProjects();
+}
+
+function deleteProject() {
+  if (!editingProjectId) return;
+  const p = projects.find(x => x.id === editingProjectId);
+  if (!confirm(`Delete "${p?.name}"?`)) return;
+  projects = projects.filter(x => x.id !== editingProjectId);
+  localStorage.setItem('rb_projects', JSON.stringify(projects));
+  closeModal();
+  renderProjects();
+  toast('Project deleted');
+}
+
+function selectColor(chip) {
+  document.querySelectorAll('.color-chip').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+  selectedColor = chip.dataset.color;
+}
+
+function selectColorByValue(val) {
+  selectedColor = val;
+  document.querySelectorAll('.color-chip').forEach(c => {
+    c.classList.toggle('selected', c.dataset.color === val);
+  });
+}
+
+function closeModal() {
+  document.getElementById('project-modal').classList.remove('show');
+}
+
+document.getElementById('project-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('project-modal')) closeModal();
+});
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── INIT ──────────────────────────────────────────────────
+initDate();
+initDaily();
+initIntention();
+renderTodos();
+renderProjects();
+</script>
+</body>
+</html>
