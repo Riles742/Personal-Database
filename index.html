@@ -919,18 +919,28 @@ function renderTodos() {
 }
 
 // ── PROJECTS ──────────────────────────────────────────────
+// Projects that link to their own dedicated page instead of opening the edit modal
+const PROJECT_LINKS = {
+  'Job search': 'career.html',
+};
+
 function renderProjects() {
   const grid = document.getElementById('projects-grid');
   const active = projects.filter(p => p.status !== 'done');
-  grid.innerHTML = active.map(p => `
-    <div class="project-tile" style="--tile-color:${p.color}" onclick="editProjectById(${p.id})">
-      <div class="tile-name">${p.name}</div>
+  grid.innerHTML = active.map(p => {
+    const link = PROJECT_LINKS[p.name];
+    const tileInner = `
+      <div class="tile-name">${p.name}${link ? ' <span style="font-size:10px;opacity:0.5">↗</span>' : ''}</div>
       <div class="tile-status">${p.status} · ${p.cat}</div>
       ${p.next ? `<div class="tile-next">${p.next}</div>` : ''}
       <div class="tile-bar-wrap"><div class="tile-bar-fill" style="width:${p.progress||0}%"></div></div>
       <div class="tile-pct">${p.progress||0}%</div>
-    </div>
-  `).join('');
+    `;
+    if (link) {
+      return `<a href="${link}" class="project-tile" style="--tile-color:${p.color}">${tileInner}</a>`;
+    }
+    return `<div class="project-tile" style="--tile-color:${p.color}" onclick="editProjectById(${p.id})">${tileInner}</div>`;
+  }).join('');
 }
 
 function openProjectModal() {
